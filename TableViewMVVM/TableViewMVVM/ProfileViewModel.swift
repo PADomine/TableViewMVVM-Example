@@ -97,3 +97,17 @@ extension ProfileViewModel: UITableViewDataSource {
 //        }
     }
 }
+
+extension ProfileViewModel: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let item = items[indexPath.section]
+        switch item.type {
+        case .nameAndPicture:
+            return 100
+        case .friend:
+            return 80
+        default:
+            return 60
+        }
+    }
+}

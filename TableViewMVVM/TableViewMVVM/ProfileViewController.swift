@@ -20,6 +20,7 @@ class ProfileViewController: UIViewController {
         profileViewModel = ProfileViewModel()
         
         tableView.dataSource = profileViewModel
+        tableView.delegate = profileViewModel
     }
 
 }
