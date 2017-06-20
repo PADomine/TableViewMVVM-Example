@@ -15,6 +15,8 @@ class ProfileViewModelNameAndPictureItem: ProfileViewModelItem {
     var sectionTitle: String  {
         return "Main Info"
     }
+    var isCollapsed = true
+    
     var pictureUrl: String
     var userName: String
     

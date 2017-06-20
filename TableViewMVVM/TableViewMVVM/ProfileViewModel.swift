@@ -12,6 +12,9 @@ import UIKit
 class ProfileViewModel: NSObject {
     var items = [ProfileViewModelItem]()
     
+    // callback to reload tableViewSections
+    var reloadSections: ((_ section: Int) -> Void)?
+    
     override init() {
         super.init()
         guard let data = JSONParser.dataFromFile("ServerData"), let profile = Profile(data: data) else {
@@ -51,7 +54,23 @@ extension ProfileViewModel: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section].rowCount
+        let item = items[section]
+        
+        guard item.isCollapsible else {
+            return item.rowCount
+        }
+        
+        if item.isCollapsed {
+            return 0
+        } else {
+            return item.rowCount
+        }
+        
+        
+//        if item.isCollapsible && item.isCollapsed {
+//            return 0
+//        }
+//        return item.rowCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -87,10 +106,6 @@ extension ProfileViewModel: UITableViewDataSource {
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return items[section].sectionTitle
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        switch items[indexPath.section].type {
 //            // do appropriate action for each type
@@ -108,6 +123,34 @@ extension ProfileViewModel: UITableViewDelegate {
             return 80
         default:
             return 60
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderView.identifier) as? HeaderView {
+            headerView.item = self.items[section]
+            headerView.section = section
+            headerView.delegate = self
+            return headerView
+        }
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
+    }
+}
+
+extension ProfileViewModel: HeaderViewDelegate {
+    func toggleSection(header: HeaderView, section: Int) {
+        var item = items[section]
+        if item.isCollapsible {
+            // Toggle collapse
+            let collapsed = !item.isCollapsed
+            item.isCollapsed = collapsed
+            header.setCollapsed(collapsed: collapsed)
+            // Adjust the number of the rows inside the section
+            reloadSections?(section)
         }
     }
 }

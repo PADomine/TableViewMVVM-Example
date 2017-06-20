@@ -15,11 +15,13 @@ class ProfileViewModeAttributeItem: ProfileViewModelItem {
     var sectionTitle: String {
         return "Attributes"
     }
-    
     var rowCount: Int {
         return attributes.count
     }
+    var isCollapsed = true
+    
     var attributes: [Attribute]
+    
     init(attributes: [Attribute]) {
         self.attributes = attributes
     }

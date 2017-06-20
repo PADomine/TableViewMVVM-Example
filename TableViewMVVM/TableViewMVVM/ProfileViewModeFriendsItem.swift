@@ -18,7 +18,10 @@ class ProfileViewModeFriendsItem: ProfileViewModelItem {
     var rowCount: Int {
         return friends.count
     }
+    var isCollapsed = true
+    
     var friends: [Friend]
+    
     init(friends: [Friend]) {
         self.friends = friends
     }
