@@ -32,12 +32,19 @@ class NameAndPictureCell: UITableViewCell {
         super.awakeFromNib()
         
         pictureImageView?.layer.cornerRadius = pictureImageView.frame.width / 2
+        pictureImageView?.clipsToBounds = true
+        pictureImageView?.contentMode = .scaleAspectFit
+        pictureImageView?.backgroundColor = UIColor.lightGray
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
         pictureImageView?.image = nil
+    }
+    
+    static var nib: UINib {
+        return UINib(nibName: identifier, bundle: nil)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

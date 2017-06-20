@@ -15,6 +15,8 @@ class ProfileViewModelAboutItem: ProfileViewModelItem {
     var sectionTitle: String {
         return "About"
     }
+    var isCollapsed = true
+    
     var about: String
     
     init(about: String) {

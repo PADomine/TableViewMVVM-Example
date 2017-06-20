@@ -19,7 +19,22 @@ class ProfileViewController: UIViewController {
         
         profileViewModel = ProfileViewModel()
         
+        tableView?.estimatedRowHeight = 100
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        tableView?.sectionHeaderHeight = 60
+        tableView?.separatorStyle = .none
+        
+        let nib = UINib(nibName: HeaderView.identifier, bundle: nil)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: HeaderView.identifier)
+        
         tableView.dataSource = profileViewModel
+        tableView.delegate = profileViewModel
+        
+        profileViewModel.reloadSections = { [weak self] (section: Int) in
+            self?.tableView?.beginUpdates()
+            self?.tableView?.reloadSections([section], with: .fade)
+            self?.tableView?.endUpdates()
+        }
     }
 
 }

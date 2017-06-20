@@ -15,7 +15,10 @@ class ProfileViewModelEmailItem: ProfileViewModelItem {
     var sectionTitle: String {
         return "Email"
     }
+    var isCollapsed = true
+    
     var email: String
+    
     init(email: String) {
         self.email = email
     }
